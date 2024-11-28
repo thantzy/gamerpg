@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Player Movement DOM</title>
+  <style>
+    #gameArea {
+      width: 400px;
+      height: 400px;
+      border: 2px solid black;
+      position: relative;
+      margin: 20px auto;
+    }
+    #player {
+      width: 30px;
+      height: 30px;
+      background-color: blue;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    #obstacle {
+      width: 100px;
+      height: 100px;
+      background-color: red;
+      position: absolute;
+      left: 150px;
+      top: 150px;
+    }
+
+    @keyframes mymove {
+    0% {
+        top: 0;
+      }
+      50% {
+        top: 200px;
+      }
+      50% {
+        top: 200px;
+      }
+      100% {
+        top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="gameArea">
+  <div id="player"></div>
+  <div id="obstacle"></div>
+</div>
+
+<script>
+  const player = document.getElementById("player");
+  const obstacle = document.getElementById("obstacle");
+
+  let posX = 0;
+  let posY = 0;
+  const step = 2; // Mengatur langkah kecil
+
+  let keys = {}; // Untuk menyimpan status tombol panah yang ditekan
+
+  // Fungsi untuk memeriksa tabrakan dengan obstacle
+  function checkCollision(newX, newY) {
+    const playerLeft = newX;
+    const playerRight = newX + player.offsetWidth;
+    const playerTop = newY;
+    const playerBottom = newY + player.offsetHeight;
+
+    const obstacleLeft = obstacle.offsetLeft;
+    const obstacleRight = obstacle.offsetLeft + obstacle.offsetWidth;
+    const obstacleTop = obstacle.offsetTop;
+    const obstacleBottom = obstacle.offsetTop + obstacle.offsetHeight;
+
+    return (
+      playerRight > obstacleLeft &&
+      playerLeft < obstacleRight &&
+      playerBottom > obstacleTop &&
+      playerTop < obstacleBottom
+    );
+  }
+
+  // Fungsi utama untuk menggerakkan player
+  function movePlayer() {
+    let newX = posX;
+    let newY = posY;
+
+    // Periksa tombol yang ditekan dan atur posisi baru
+    if (keys["ArrowUp"]) newY -= step;
+    if (keys["ArrowDown"]) newY += step;
+    if (keys["ArrowLeft"]) newX -= step;
+    if (keys["ArrowRight"]) newX += step;
+
+    // Batasi agar tidak keluar dari area permainan
+    newX = Math.max(0, Math.min(newX, 370));
+    newY = Math.max(0, Math.min(newY, 370));
+
+    // Periksa tabrakan sebelum memperbarui posisi
+    if (!checkCollision(newX, newY)) {
+      posX = newX;
+      posY = newY;
+      player.style.left = posX + "px";
+      player.style.top = posY + "px";
+    }
+
+    requestAnimationFrame(movePlayer); // Memanggil fungsi ini terus menerus agar gerakan mulus
+  }
+
+  // Event listener untuk mendeteksi tombol ditekan dan dilepas
+  document.addEventListener("keydown", (event) => {
+    keys[event.key] = true;
+  });
+
+  document.addEventListener("keyup", (event) => {
+    keys[event.key] = false;
+  });
+
+  // Mulai animasi
+  movePlayer();
+</script>
+
+</body>
+</html>

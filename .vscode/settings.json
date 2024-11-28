@@ -1,0 +1,17 @@
+{
+    "editor.cursorStyle": "line",
+    "editor.cursorBlinking": "expand",
+    "editor.cursorWidth": 2,
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.cursorSurroundingLinesStyle": "all",
+    "editor.cursorSurroundingLines": 10,
+    "editor.smoothScrolling": true,
+    "[html]": {
+        "editor.suggest.insertMode": "replace"
+    },
+    "smoothtype.duration": 80,
+    "smoothtype.autoReload": false,
+    "editor.fontFamily": "Consolas, 'Courier New', monospace"
+
+
+}
